@@ -17,7 +17,7 @@ blocks:
             - 'docker push $SEMAPHORE_REGISTRY_URL/semaphoredemo-cicd-kubernetes-web:$SEMAPHORE_WORKFLOW_ID'
       env_vars:
         - name: SEMAPHORE_REGISTRY_URL
-          value: 'https://hub.docker.com/samdclopez'
+          value: samdclopez
       secrets:
         - name: DOCKER_HUB_BUILD
     dependencies: []
