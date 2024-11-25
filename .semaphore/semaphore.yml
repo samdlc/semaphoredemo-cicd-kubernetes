@@ -19,5 +19,5 @@ blocks:
         - name: SEMAPHORE_REGISTRY_USERNAME
           value: samdclopez
         - name: SEMAPHORE_REGISTRY_PASSWORD
-          value: S@mu3l162$
+          value: dckr_pat_34J3bkhyoDWO_DtgBXZlC4GKCxU
     dependencies: []
