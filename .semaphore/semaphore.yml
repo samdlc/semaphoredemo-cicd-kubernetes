@@ -18,4 +18,6 @@ blocks:
       env_vars:
         - name: SEMAPHORE_REGISTRY_URL
           value: 'https://hub.docker.com/'
+      secrets:
+        - name: DOCKER_HUB_BUILD
     dependencies: []
