@@ -19,7 +19,7 @@ blocks:
         - name: SEMAPHORE_REGISTRY_URL
           value: 'https://hub.docker.com/'
         - name: SEMAPHORE_WORKFLOW_ID
-          value: 'sha256:31271fe4dc85642e0b7319ef0bfd162a3d1708456ff42667d18aa253f04669b5'
+          value: '''31271fe4dc85642e0b7319ef0bfd162a3d1708456ff42667d18aa253f04669b5'''
       secrets:
         - name: DOCKER_HUB_BUILD
     dependencies: []
