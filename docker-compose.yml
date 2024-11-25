@@ -1,0 +1,28 @@
+# this setup is for development purposes only
+
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - migrate
+    environment:
+      DB_HOST: db
+
+  migrate:
+    build: .
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+    command: sh -c 'sh src/wait-port db 5432 && node src/migrate.js'
+
+  db:
+    image: postgres:12
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'postgres'
+      POSTGRES_DB: 'postgres'
