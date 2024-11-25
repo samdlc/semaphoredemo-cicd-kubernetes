@@ -107,3 +107,51 @@ $ sem create secret dockerhub \
 Copyright (c) 2019 Rendered Text
 
 Distributed under the MIT License. See the file [LICENSE.md](./LICENSE.md).
+
+
+###  Setting Semaphore Project
+
+---**** NOTES ****--
+1. Docker Hub need it.
+2. We want to push your local image to Docker Hub from any IDE or Docker Hub(Pending)
+3. Get communication between IDE and DockerHub. you need a token to login on your local environment.
+4. Environment variables must be constants, and global variables include in Personal Settings from Semaphore site
+--> SEMAPHORE_REGISTRY_USERNAME = docker user name
+--> SEMAPHORE_REGISTRY_PASSWORD = token must be created.
+5. Replacing the name: demo with your name of the project
+---****
+
+-- BLOCK 1: Build
+docker build
+
+checkout
+docker login -u $SEMAPHORE_REGISTRY_USERNAME -p $SEMAPHORE_REGISTRY_PASSWORD
+docker pull $SEMAPHORE_REGISTRY_URL/semaphoredemo-cicd-kubernetes-web:latest
+docker build --cache-from $SEMAPHORE_REGISTRY_URL/semaphoredemo-cicd-kubernetes-web:latest -t $SEMAPHORE_REGISTRY_URL/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID .
+docker push $SEMAPHORE_REGISTRY_URL/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID
+
+
+-- BLOCK 2: Test
+Job Name: Unit test
+docker run -it $SEMAPHORE_REGISTRY_URL/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID npm run lint
+
+Job Name: Functional test
+sem-service start postgres
+docker run --net=host -it $SEMAPHORE_REGISTRY_URL/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID npm run ping
+docker run --net=host -it $SEMAPHORE_REGISTRY_URL/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID npm run migrate
+
+Job Name: Integration test
+sem-service start postgres
+docker run --net=host -it $SEMAPHORE_REGISTRY_URL/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID npm run test
+
+Prologue
+docker login -u $SEMAPHORE_REGISTRY_USERNAME -p $SEMAPHORE_REGISTRY_PASSWORD
+docker pull $SEMAPHORE_REGISTRY_URL/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID
+
+
+-- BLOCK 3: Push
+Job Name: Push
+docker login -u $SEMAPHORE_REGISTRY_USERNAME -p $SEMAPHORE_REGISTRY_PASSWORD
+docker pull $SEMAPHORE_REGISTRY_URL/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID
+docker tag $SEMAPHORE_REGISTRY_URL/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID $SEMAPHORE_REGISTRY_URL/cicd_docker_kubernetes:latest
+docker push $SEMAPHORE_REGISTRY_URL/cicd_docker_kubernetes:latest
