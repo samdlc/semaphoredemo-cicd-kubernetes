@@ -11,15 +11,13 @@ blocks:
         - name: docker build
           commands:
             - checkout
-            - docker login -u $SEMAPHORE_REGISTRY_USERNAME -p $SEMAPHORE_REGISTRY_PASSWORD
-            - 'docker pull $SEMAPHORE_REGISTRY_URL/semaphoredemo-cicd-kubernetes-web:latest || true'
+            - docker login -u $SEMAPHORE_REGISTRY_USERNAME -p $SEMAPHORE_REGISTRY_PASSWORD $SEMAPHORE_REGISTRY_URL
+            - 'docker pull $SEMAPHORE_REGISTRY_URL/semaphoredemo-cicd-kubernetes-web:latest'
             - 'docker build --cache-from $SEMAPHORE_REGISTRY_URL/semaphoredemo-cicd-kubernetes-web:latest -t $SEMAPHORE_REGISTRY_URL/lastest:$SEMAPHORE_WORKFLOW_ID .'
             - 'docker push $SEMAPHORE_REGISTRY_URL/semaphoredemo-cicd-kubernetes-web:$SEMAPHORE_WORKFLOW_ID'
       env_vars:
         - name: SEMAPHORE_REGISTRY_URL
           value: 'https://hub.docker.com/samdclopez'
-        - name: SEMAPHORE_WORKFLOW_ID
-          value: '''31271fe4dc85642e0b7319ef0bfd162a3d1708456ff42667d18aa253f04669b5'''
       secrets:
         - name: DOCKER_HUB_BUILD
     dependencies: []
