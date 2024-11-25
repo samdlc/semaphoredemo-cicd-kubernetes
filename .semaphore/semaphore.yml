@@ -20,4 +20,6 @@ blocks:
           value: samdclopez
         - name: SEMAPHORE_REGISTRY_PASSWORD
           value: dckr_pat_34J3bkhyoDWO_DtgBXZlC4GKCxU
+        - name: SEMAPHORE_REGISTRY_URL
+          value: 'https://hub.docker.com/layers/samdclopez/semaphoredemo-cicd-kubernetes-web/latest/images/sha256-31271fe4dc85642e0b7319ef0bfd162a3d1708456ff42667d18aa253f04669b5?context=repo'
     dependencies: []
