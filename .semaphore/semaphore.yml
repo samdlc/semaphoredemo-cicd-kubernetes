@@ -15,6 +15,8 @@ blocks:
             - 'docker pull $SEMAPHORE_REGISTRY_URL/demo:latest || true'
             - 'docker build --cache-from $SEMAPHORE_REGISTRY_URL/demo:latest -t $SEMAPHORE_REGISTRY_URL/demo:$SEMAPHORE_WORKFLOW_ID .'
             - 'docker push $SEMAPHORE_REGISTRY_URL/demo:$SEMAPHORE_WORKFLOW_ID'
+    dependencies:
+      - Tests
   - name: Tests
     task:
       prologue:
@@ -33,6 +35,7 @@ blocks:
           commands:
             - sem-service start postgres
             - 'docker run --net=host -it $SEMAPHORE_REGISTRY_URL/demo:$SEMAPHORE_WORKFLOW_ID npm run test'
+    dependencies: []
   - name: Push
     task:
       jobs:
@@ -42,3 +45,5 @@ blocks:
             - 'docker pull $SEMAPHORE_REGISTRY_URL/demo:$SEMAPHORE_WORKFLOW_ID'
             - 'docker tag $SEMAPHORE_REGISTRY_URL/demo:$SEMAPHORE_WORKFLOW_ID $SEMAPHORE_REGISTRY_URL/demo:latest'
             - 'docker push $SEMAPHORE_REGISTRY_URL/demo:latest'
+    dependencies:
+      - Tests
