@@ -11,7 +11,7 @@ blocks:
         - name: docker build
           commands:
             - checkout
-            - docker login -u $SEMAPHORE_REGISTRY_USERNAME -p $SEMAPHORE_REGISTRY_PASSWORD $SEMAPHORE_REGISTRY_URL
+            - docker login
             - 'docker pull $SEMAPHORE_REGISTRY_URL/semaphoredemo-cicd-kubernetes-web:latest || true'
             - 'docker build --cache-from $SEMAPHORE_REGISTRY_URL/semaphoredemo-cicd-kubernetes-web:latest -t $SEMAPHORE_REGISTRY_URL/semaphoredemo-cicd-kubernetes-web:$SEMAPHORE_WORKFLOW_ID .'
             - 'docker push $SEMAPHORE_REGISTRY_URL/semaphoredemo-cicd-kubernetes-web:$SEMAPHORE_WORKFLOW_ID'
