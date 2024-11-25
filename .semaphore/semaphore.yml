@@ -21,7 +21,7 @@ blocks:
         - name: SEMAPHORE_REGISTRY_PASSWORD
           value: dckr_pat_34J3bkhyoDWO_DtgBXZlC4GKCxU
         - name: SEMAPHORE_REGISTRY_URL
-          value: 'https://hub.docker.com/repository/docker/samdclopez/'
+          value: 'https://hub.docker.com/'
         - name: SEMAPHORE_WORKFLOW_ID
           value: '1'
     dependencies: []
