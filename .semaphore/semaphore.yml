@@ -63,3 +63,20 @@ blocks:
             - 'docker pull $SEMAPHORE_REGISTRY_URL/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID'
             - 'docker tag $SEMAPHORE_REGISTRY_URL/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID $SEMAPHORE_REGISTRY_URL/cicd_docker_kubernetes:latest'
             - 'docker push $SEMAPHORE_REGISTRY_URL/cicd_docker_kubernetes:latest'
+promotions:
+  - name: Canary
+    pipeline_file: pipeline_11.yml
+    auto_promote:
+      when: branch = 'master' AND result = 'passed'
+    parameters:
+      env_vars:
+        - required: true
+          options: []
+          default_value: '1'
+          description: ''
+          name: CANARY_PODS
+        - required: true
+          options: []
+          default_value: '2'
+          description: ''
+          name: STABLE_PODS

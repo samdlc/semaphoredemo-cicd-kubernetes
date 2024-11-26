@@ -1,0 +1,63 @@
+version: v1.0
+name: DigitalOcean
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu2004
+blocks:
+  - name: Push
+    task:
+      jobs:
+        - name: Image
+          commands:
+            - 'docker login -u $SEMAPHORE_REGISTRY_USERNAME -p $SEMAPHORE_REGISTRY_PASSWORD '
+            - 'docker pull $SEMAPHORE_REGISTRY_URL/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID'
+            - 'docker tag $SEMAPHORE_REGISTRY_URL/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID registry.digitalocean.com/$REGISTRY_NAME/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID'
+            - doctl auth init -t $DO_ACCESS_TOKEN
+            - doctl registry login
+            - 'docker push registry.digitalocean.com/$REGISTRY_NAME/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID'
+      secrets:
+        - name: DOCKER_HUB_BUILD
+        - name: do-key
+      env_vars:
+        - name: REGISTRY_NAME
+          value: containerdocker-cicd-kubernetes
+        - name: SEMAPHORE_REGISTRY_URL
+          value: samdclopez
+  - name: Deploy
+    task:
+      secrets:
+        - name: db-params
+        - name: do-key
+      env_vars:
+        - name: CLUSTER_NAME
+          value: semaphoredemo-cicd-kubernetes
+        - name: REGISTRY_NAME
+          value: containerdocker-cicd-kubernetes
+      jobs:
+        - name: Image
+          commands:
+            - doctl auth init --access-token $DO_ACCESS_TOKEN
+            - 'doctl kubernetes cluster kubeconfig save "${CLUSTER_NAME}"'
+            - doctl registry kubernetes-manifest | kubectl apply -f -
+            - checkout
+            - kubectl apply -f manifests/service.yml
+            - './apply.sh manifests/deployment.yml addressbook-canary $CANARY_PODS registry.digitalocean.com/$REGISTRY_NAME/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID'
+            - if kubectl get deployment addressbook-stable; then kubectl scale --replicas=$STABLE_PODS deployment/addressbook-stable; fi
+  - name: Functional Test
+    task:
+      secrets:
+        - name: do-key
+      env_vars:
+        - name: CLUSTER_NAME
+          value: semaphoredemo-cicd-kubernetes
+      jobs:
+        - name: Test Image
+          commands:
+            - doctl auth init --access-token $DO_ACCESS_TOKEN
+            - 'doctl kubernetes cluster kubeconfig save "${CLUSTER_NAME}"'
+            - doctl registry kubernetes-manifest | kubectl apply -f -
+            - checkout
+            - POD=$(kubectl get pod -l deployment=addressbook-canary -o name | head -n 1)
+            - kubectl exec -it "$POD" -- npm run ping
+            - kubectl exec -it "$POD" -- npm run migrate
