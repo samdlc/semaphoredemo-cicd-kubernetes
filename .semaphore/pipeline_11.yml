@@ -10,7 +10,7 @@ blocks:
       jobs:
         - name: Push Image
           commands:
-            - docker login -u $SEMAPHORE_REGISTRY_USERNAME -p $SEMAPHORE_REGISTRY_PASSWORD $SEMAPHORE_REGISTRY_URL
+            - docker login -u $SEMAPHORE_REGISTRY_USERNAME -p $SEMAPHORE_REGISTRY_PASSWORD
             - 'docker pull $SEMAPHORE_REGISTRY_URL/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID'
             - 'docker tag $SEMAPHORE_REGISTRY_URL/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID registry.digitalocean.com/$REGISTRY_NAME/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID'
             - doctl auth init -t $DO_ACCESS_TOKEN
