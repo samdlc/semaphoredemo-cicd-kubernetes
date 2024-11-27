@@ -10,8 +10,9 @@ blocks:
       jobs:
         - name: Deploy
           commands:
-            - kubectl apply -f manifests/service.yml
-            - 'bash apply.sh manifests/deployment.yml addressbook-stable $STABLE_PODS registry.digitalocean.com/$REGISTRY_NAME/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID'
+            - kubectl get nodes
+            - kubectl get pods
+            - './apply.sh manifests/deployment.yml addressbook-stable $STABLE_PODS registry.digitalocean.com/$REGISTRY_NAME/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID'
             - if kubectl get deployment addressbook-canary; then kubectl delete deployment/addressbook-canary; fi
       secrets:
         - name: db-params

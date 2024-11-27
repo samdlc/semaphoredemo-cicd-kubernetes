@@ -64,7 +64,7 @@ blocks:
             - 'docker tag $SEMAPHORE_REGISTRY_URL/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID $SEMAPHORE_REGISTRY_URL/cicd_docker_kubernetes:latest'
             - 'docker push $SEMAPHORE_REGISTRY_URL/cicd_docker_kubernetes:latest'
 promotions:
-  - name: Canary
+  - name: Canary Deployment
     pipeline_file: pipeline_11.yml
     auto_promote:
       when: branch = 'master' AND result = 'passed'
