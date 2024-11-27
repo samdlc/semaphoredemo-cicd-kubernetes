@@ -38,7 +38,7 @@ blocks:
         - name: Image
           commands:
             - kubectl apply -f manifests/service.yml
-            - 'bash apply.sh manifests/deployment.yml addressbook-canary 1 registry.digitalocean.com/$REGISTRY_NAME/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID'
+            - 'bash ./apply.sh manifests/deployment.yml addressbook-canary 1 registry.digitalocean.com/$REGISTRY_NAME/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID'
             - if kubectl get deployment addressbook-stable; then kubectl scale --replicas=$STABLE_PODS deployment/addressbook-stable; fi
       prologue:
         commands:
@@ -62,3 +62,13 @@ blocks:
             - POD=$(kubectl get pod -l deployment=addressbook-canary -o name | head -n 1)
             - kubectl exec -it "$POD" -- npm run ping
             - kubectl exec -it "$POD" -- npm run migrate
+promotions:
+  - name: Stable
+    pipeline_file: pipeline_12.yml
+    parameters:
+      env_vars:
+        - required: true
+          options: []
+          default_value: '3'
+          description: $STABLE_PODS
+          name: STABLE_PODS
