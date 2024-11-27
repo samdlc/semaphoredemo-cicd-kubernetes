@@ -19,7 +19,7 @@ spec:
         deployment: $deployment
     spec:
       imagePullSecrets:
-      - name: dockerhub
+      - name: DOCKER_HUB_BUILD
       containers:
       - name: addressbook
         image: $img
