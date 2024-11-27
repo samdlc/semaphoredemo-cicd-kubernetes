@@ -37,13 +37,15 @@ blocks:
       jobs:
         - name: Image
           commands:
-            - doctl auth init --access-token $DO_ACCESS_TOKEN
-            - 'doctl kubernetes cluster kubeconfig save "${CLUSTER_NAME}"'
-            - doctl registry kubernetes-manifest | kubectl apply -f -
-            - checkout
             - kubectl apply -f manifests/service.yml
             - './apply.sh manifests/deployment.yml addressbook-canary $CANARY_PODS registry.digitalocean.com/$REGISTRY_NAME/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID'
             - if kubectl get deployment addressbook-stable; then kubectl scale --replicas=$STABLE_PODS deployment/addressbook-stable; fi
+      prologue:
+        commands:
+          - doctl auth init --access-token $DO_ACCESS_TOKEN
+          - 'doctl kubernetes cluster kubeconfig save "${CLUSTER_NAME}"'
+          - doctl registry kubernetes-manifest | kubectl apply -f -
+          - checkout
   - name: Functional Test
     task:
       secrets:
