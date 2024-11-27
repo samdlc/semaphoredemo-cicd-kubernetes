@@ -10,12 +10,8 @@ blocks:
       jobs:
         - name: Deploy
           commands:
-            - doctl auth init --access-token $DO_ACCESS_TOKEN
-            - 'doctl kubernetes cluster kubeconfig save "${CLUSTER_NAME}"'
-            - doctl registry kubernetes-manifest | kubectl apply -f -
-            - checkout
             - kubectl apply -f manifests/service.yml
-            - 'bash ./apply.sh manifests/deployment.yml addressbook-stable $STABLE_PODS registry.digitalocean.com/$REGISTRY_NAME/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID'
+            - 'bash apply.sh manifests/deployment.yml addressbook-stable $STABLE_PODS registry.digitalocean.com/$REGISTRY_NAME/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID'
             - if kubectl get deployment addressbook-canary; then kubectl delete deployment/addressbook-canary; fi
       secrets:
         - name: db-params
@@ -25,3 +21,8 @@ blocks:
           value: semaphore-demo-kubernetes
         - name: REGISTRY_NAME
           value: containerdocker-cicd-kubernetes
+      prologue:
+        commands:
+          - doctl auth init --access-token $DO_ACCESS_TOKEN
+          - 'doctl kubernetes cluster kubeconfig save "${CLUSTER_NAME}"'
+          - checkout
