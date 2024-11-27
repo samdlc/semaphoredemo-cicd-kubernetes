@@ -4,6 +4,10 @@ agent:
   machine:
     type: e1-standard-2
     os_image: ubuntu2004
+global_job_config:
+  prologue:
+    commands:
+      - chmod u+x ./apply.sh
 blocks:
   - name: Push
     task:
@@ -44,7 +48,6 @@ blocks:
         commands:
           - doctl auth init --access-token $DO_ACCESS_TOKEN
           - 'doctl kubernetes cluster kubeconfig save "${CLUSTER_NAME}"'
-          - chmod u+x ./apply.sh
           - checkout
   - name: Functional Test
     task:
