@@ -2,12 +2,8 @@ version: v1.0
 name: DigitalOcean
 agent:
   machine:
-    type: e1-standard-2
-    os_image: ubuntu2004
-global_job_config:
-  prologue:
-    commands:
-      - chmod u+x ./apply.sh
+    type: e2-standard-2
+    os_image: ubuntu2204
 blocks:
   - name: Push
     task:
@@ -28,6 +24,9 @@ blocks:
           value: containerdocker-cicd-kubernetes
         - name: SEMAPHORE_REGISTRY_URL
           value: samdclopez
+      prologue:
+        commands:
+          - echo 'sh test' ./apply.sh
   - name: Deploy
     task:
       secrets:
