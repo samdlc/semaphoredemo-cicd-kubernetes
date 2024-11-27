@@ -24,8 +24,6 @@ blocks:
           value: containerdocker-cicd-kubernetes
         - name: SEMAPHORE_REGISTRY_URL
           value: samdclopez
-        - name: SEMAPHORE_REGISTRY_PASSWORD_TEST
-          value: dop_v1_da6625b1ac4311bf729fd3b7dc80432473e56cf58f172395df6c9e39275c6482
   - name: Deploy
     task:
       secrets:
