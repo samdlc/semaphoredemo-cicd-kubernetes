@@ -14,7 +14,7 @@ blocks:
             - 'docker pull $SEMAPHORE_REGISTRY_URL/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID'
             - 'docker tag $SEMAPHORE_REGISTRY_URL/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID registry.digitalocean.com/$REGISTRY_NAME/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID'
             - doctl auth init -t $DO_ACCESS_TOKEN
-            - docker login -u $SEMAPHORE_REGISTRY_USERNAME --password-stdin
+            - docker login -u $SEMAPHORE_REGISTRY_USERNAME -p $SEMAPHORE_REGISTRY_PASSWORD
             - 'docker push registry.digitalocean.com/$REGISTRY_NAME/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID'
       secrets:
         - name: DOCKER_HUB_BUILD
