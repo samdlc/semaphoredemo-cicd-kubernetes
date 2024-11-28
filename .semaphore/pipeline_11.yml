@@ -24,9 +24,6 @@ blocks:
           value: containerdocker-cicd-kubernetes
         - name: SEMAPHORE_REGISTRY_URL
           value: samdclopez
-      prologue:
-        commands:
-          - echo 'sh test' ./apply.sh
   - name: Deploy
     task:
       secrets:
