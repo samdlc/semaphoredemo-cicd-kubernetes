@@ -38,7 +38,7 @@ blocks:
         - name: Image
           commands:
             - kubectl apply -f manifests/service.yml
-            - '_bash apply.sh manifests/deployment.yml addressbook-canary 1 registry.digitalocean.com/$REGISTRY_NAME/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID'
+            - './apply.sh manifests/deployment.yml addressbook-canary 1 registry.digitalocean.com/$REGISTRY_NAME/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID'
             - if kubectl get deployment addressbook-stable; then kubectl scale --replicas=$STABLE_PODS deployment/addressbook-stable; fi
       prologue:
         commands:
