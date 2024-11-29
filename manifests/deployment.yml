@@ -21,8 +21,8 @@ spec:
       imagePullSecrets:
       - name: DOCKER_HUB_BUILD
       containers:
-      - name: cicd_docker_kubernetes
-        image: registry.digitalocean.com/$REGISTRY_NAME/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID
+      - name: addressbook
+        image: registry.digitalocean.com/$REGISTRY_NAME/addressbook:$SEMAPHORE_WORKFLOW_ID
         env:
         - name: NODE_ENV
           value: "production"
