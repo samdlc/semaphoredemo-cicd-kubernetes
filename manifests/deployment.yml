@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: addressbook-canary
+  name: addressbook
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: addressbook-canary
+      app: addressbook
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -16,7 +16,7 @@ spec:
     metadata:
       labels:
         app: addressbook
-        deployment: addressbook-canary
+        deployment: addressbook
     spec:
       imagePullSecrets:
       - name: DOCKER_HUB_BUILD
