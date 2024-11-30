@@ -14,4 +14,4 @@ RUN npm install
 COPY src $APP_HOME/src/
 
 EXPOSE 3000
-CMD ["node", "src/app.js"]
+CMD ["npm", "run" "src/app.js"]
