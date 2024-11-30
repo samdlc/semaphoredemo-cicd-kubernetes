@@ -14,8 +14,12 @@ spec:
         deployment: addressbook
     spec:
       containers:
-      - name: addressbook
+      - name: containerdocker-cicd-kubernetes
         image: registry.digitalocean.com/$REGISTRY_NAME/cicd_docker_kubernetes:$SEMAPHORE_WORKFLOW_ID
+        readinessProbe:
+            httpGet:
+              path: /ready
+              port: 3000
         env:
         - name: NODE_ENV
           value: "production"
