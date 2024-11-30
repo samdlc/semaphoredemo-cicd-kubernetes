@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest src",
     "start": "node src/app.js",
-    "lint": "jshint src/*.js",
+    "lint": "jshint src/*.js database*.js src/migrate.js",
     "ping": "node src/ping.js",
     "migrate": "node src/migrate.js"
   },
