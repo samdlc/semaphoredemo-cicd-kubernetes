@@ -41,6 +41,8 @@ blocks:
             - kubectl get pods
             - kubectl apply -f manifests/service.yml
             - kubectl apply -f manifests/deployment.yml
+            - kubectl rollout status -f manifests/deployment.yml --timeout=120s
+            - rm -f manifests/deployment.yml
       prologue:
         commands:
           - doctl auth init --access-token $DO_ACCESS_TOKEN
