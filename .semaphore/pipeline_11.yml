@@ -37,10 +37,10 @@ blocks:
       jobs:
         - name: Image
           commands:
-            - kubectl apply -f manifests/service.yml
             - kubectl get nodes
             - kubectl get pods
             - kubectl apply -f manifests/deployment.yml
+            - kubectl apply -f manifests/service.yml
       prologue:
         commands:
           - doctl auth init --access-token $DO_ACCESS_TOKEN
